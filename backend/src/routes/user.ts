@@ -17,25 +17,33 @@ userRouter.post("/signup", async (c) => {
   if (!success) {
     c.status(411);
     return c.json({
-      message: "Inputs are not correct",
+      message: "Inputs are not valid",
     });
   }
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
-  const user = await prisma.user.create({
-    data: {
-      email: body.email,
-      password: body.password,
-      name: body.name,
-    },
-  });
-  const token = await sign({ id: user.id }, c.env.JWT_SECRET);
+  try {
+    const user = await prisma.user.create({
+      data: {
+        email: body.email,
+        password: body.password,
+        name: body.name,
+      },
+    });
 
-  return c.json({
-    jwt: token,
-  });
+    const token = await sign({ id: user.id }, c.env.JWT_SECRET);
+
+    return c.json({
+      jwt: token,
+    });
+  } catch (e) {
+    c.status(401);
+    return c.json({
+      message: "Unable to create user at this time. Please try again later",
+    });
+  }
 });
 
 userRouter.post("/signin", async (c) => {
@@ -61,7 +69,7 @@ userRouter.post("/signin", async (c) => {
 
   if (!user) {
     c.status(403);
-    return c.json({ error: "User not found" });
+    return c.json({ message: "User not found" });
   }
 
   const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);

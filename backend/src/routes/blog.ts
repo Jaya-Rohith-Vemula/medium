@@ -18,7 +18,7 @@ blogRouter.use("/*", async (c, next) => {
   const jwt = c.req.header("Authorization");
   if (!jwt) {
     c.status(401);
-    return c.json({ error: "jwt is not provided" });
+    return c.json({ message: "jwt is not provided" });
   }
   try {
     const token = jwt.split(" ")[1];
@@ -28,11 +28,11 @@ blogRouter.use("/*", async (c, next) => {
       await next();
     } else {
       c.status(401);
-      return c.json({ error: "jwt is not valid" });
+      return c.json({ message: "jwt is not valid" });
     }
   } catch (e) {
     c.status(401);
-    return c.json({ error: "jwt is not valid" });
+    return c.json({ message: "jwt is not valid" });
   }
 });
 
