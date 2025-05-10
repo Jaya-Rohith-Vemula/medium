@@ -12,7 +12,7 @@ export const Publish = () => {
   return (
     <div>
       <Appbar />
-      <div className="flex justify-center w-full pt-8">
+      <div className="flex justify-center w-full pt-8 px-4">
         <div className="max-w-screen-lg w-full">
           <input
             onChange={(e) => {
