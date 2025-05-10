@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signinInput, signupInput } from "@jayaspackages/medium-common";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { BACKEND_URL } from "../config";
 import { Spinner } from "./Spinner";
 
@@ -41,14 +41,17 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
       const jwt = response.data.jwt;
       localStorage.setItem("token", jwt);
       navigate("/blogs");
-    } catch (e) {
-      alert("Error while signing in: " + e?.response?.data?.message);
+    } catch (e: unknown) {
+      setLoading(false);
+      if (e instanceof AxiosError) {
+        alert("Error while signing in: " + e.response?.data?.message);
+      }
       resetInputs();
     }
   }
 
   return (
-    <div className="h-screen flex justify-center flex-col">
+    <div className="h-screen flex justify-center flex-col p-5">
       {loading && (
         <div className="flex justify-center pb-10">
           <Spinner />
@@ -57,7 +60,9 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
       <div className="flex justify-center">
         <div>
           <div className="px-10">
-            <div className="text-3xl font-extrabold">Create an account</div>
+            <div className="text-2xl font-extrabold">
+              {type === "signup" ? "Create an account" : "Sign in"}
+            </div>
             <div className="text-slate-500">
               {type === "signin"
                 ? "Don't have an account?"
@@ -70,7 +75,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
               </Link>
             </div>
           </div>
-          <div className="pt-8">
+          <div className="pt-4">
             {type === "signup" ? (
               <LabelledInput
                 id="name"
