@@ -1,1 +1,1 @@
-# medium blog app
+# Pen Pulse blog app
