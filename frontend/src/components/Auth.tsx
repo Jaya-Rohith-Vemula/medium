@@ -74,6 +74,12 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
                 {type === "signin" ? "Sign up" : "Sign in"}
               </Link>
             </div>
+            {type === "signup" && (
+              <div className="text-slate-500 pt-2">
+                Sign up with a random email. <br /> No Two-Factor
+                Authentication.
+              </div>
+            )}
           </div>
           <div className="pt-4">
             {type === "signup" ? (
@@ -93,7 +99,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
             <LabelledInput
               id="email"
               label="Email"
-              placeholder="username@gmail.com"
+              placeholder="randomname@email.com"
               value={postInputs.email}
               onChange={(e) => {
                 setPostInputs({

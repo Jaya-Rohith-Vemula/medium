@@ -4,8 +4,7 @@ export const Quote = () => {
       <div className="flex justify-center">
         <div className="max-w-lg">
           <div className="text-3xl font-bold">
-            Pen Pulse is a website that allows you to create and publish your
-            own blogs.
+            Pen Pulse allows you to create and publish your own blogs.
           </div>
           <div className="max-w-md text-xl font-semibold text-left mt-4">
             Jaya Rohith Vemula
